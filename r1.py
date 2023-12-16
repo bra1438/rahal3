@@ -31,14 +31,14 @@ knn = NearestNeighbors(metric='cosine', algorithm='brute')
 knn.fit(user_item_matrix)
 
 # Streamlit App
-st.title("Personalized Recommendation System")
+st.title('Tourist-Driver Recommendation System')
 
-# User Input Form
-st.sidebar.header("User Preferences")
-language = st.sidebar.selectbox("Select Language", df['Language'].unique())
-gender = st.sidebar.radio("Select Gender", df['Gender'].unique())
-age = st.sidebar.slider("Select Age", min_value=18, max_value=60, value=30)
-hobbies = st.sidebar.text_input("Enter Hobbies (comma-separated)", "Cycling,Photography")
+# Sidebar - User Input
+st.sidebar.header('User Preferences')
+language = st.sidebar.selectbox('Language', df['Language'].unique())
+gender = st.sidebar.radio('Gender', ['M', 'F'])
+age = st.sidebar.slider('Age', min_value=20, max_value=60, value=30)
+hobbies = st.sidebar.text_input('Hobbies', 'Cycling')
 
 # Content-Based Filtering - Transform Input
 input_vector = tfidf_vectorizer.transform([hobbies])
@@ -54,8 +54,8 @@ _, indices = knn.kneighbors([user_item_matrix.loc[1].values], n_neighbors=3)
 collaborative_filtering_recommendations = df[df['DriverID'].isin(indices.flatten())]
 
 # Display Recommendations
-st.subheader("Content-Based Recommendations:")
+st.subheader('Content-Based Recommendations:')
 st.table(content_based_recommendations)
 
-st.subheader("Collaborative Filtering Recommendations:")
+st.subheader('Collaborative Filtering Recommendations:')
 st.table(collaborative_filtering_recommendations)
